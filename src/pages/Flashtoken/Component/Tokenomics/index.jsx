@@ -41,6 +41,7 @@ const Tokenomics = () => {
   const ArrowTrack = useMediaQuery('(min-width : 1199px)');
   const TokenomicsMobile = useMediaQuery('(max-width : 420px)');
   const TokenomicsButton = useMediaQuery('(max-width : 600px)');
+  const breakpoint899px = useMediaQuery('(min-width: 899px)');
   const classes = useStyles();
   const COLORS = ["#0088FE", "#03C39F", "#FFB827", "#FE8042"];
   const [isTransfer, SetisTransfer] = useState(false);
@@ -69,7 +70,7 @@ const Tokenomics = () => {
 
       }
       <img 
-            className="roadmap-image"
+            className="roadmap-image ShiftImage"
             style={{
                 position: "absolute",
                 left: "0px",  
@@ -79,7 +80,7 @@ const Tokenomics = () => {
                 cursor: 'pointer',
             }}
            src={left} onClick={prev}/>
-      <img className="roadmap-image" 
+      <img className="roadmap-image ShiftImage" 
             style={{
               position: "absolute",
               right: "0px",  
@@ -147,7 +148,6 @@ const Tokenomics = () => {
             position: "relative"
           }}
           // style={{filter:`${isTransfer && 'blur(10px)'}`}}
-          className={isTransfer ? classes.blurTransferComponent : ''}
         >
           <Grid
             item
@@ -173,7 +173,7 @@ const Tokenomics = () => {
                   width: {lg:"800px",xs:"100%"}
                 }}
               // style={{width:"427px"}}
-              >
+              className={isTransfer ? classes.blurTransferComponent : ''}>
                 <Typography
                   sx={{
                     color: "#FBBF04",
@@ -463,28 +463,51 @@ const Tokenomics = () => {
               item
               // xs={12}
               md={6}
-              sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+              sx={{ display: "flex", justifyContent: "center", alignItems: "center",
+              }}
             >
               <Grid xs={6} md={8}>
                 <Box 
                   // style={{marginLeft:70 + 'px'}}
                   sx={{ 
-                  marginLeft: {lg:70 + 'px',xs:30 + 'px'},
-                  width: { lg: "100%", xs: "80%" }, 
-                  height: { lg: "70%", xs:"70%" } ,
-                  marginTop:"10px"
-                  }}
-                  >                  
-                  <Doughnut className="doughnut-filter" data={TokenomicsMobile? DataMobile : Data}  
+                  marginLeft: {lg:70 + 'px',xs:20 + 'px'},
+                  width: { lg: "100%", xs: "80%" },
+                  marginTop: "10px",
+                  position: "relative"
+                  }}    
+                 className="CircleManager">
+                <img className="roadmap-image arrowImageReponsive" 
+                    style={{
+                      position: "absolute",
+                      right: "102%",  
+                      width: "40px",
+                      zIndex: 99999,
+                      cursor: 'pointer', 
+                    }}
+                  src={left} onClick={prev}
+                  />
+                  <img className="roadmap-image arrowImageReponsive" 
+                    style={{
+                      position: "absolute",
+                      left: "216%",  
+                      width: "40px",
+                      zIndex: 99999,
+                      cursor: 'pointer', 
+                    }}
+                  src={right} onClick={next}
+                  />                  
+                  <Doughnut className={isTransfer ? `${classes.blurTransferComponent} doughnut-filter` : 'doughnut-filter'} 
+                        data={TokenomicsMobile? DataMobile : Data}  
                         options={Options} 
                         plugins={[chartLabel]}
                         style={{display:`${!isTransfer ? 'block' : 'none'}`}}/> 
-                  <Doughnut className="doughnut-filter" data={TransferChartData} options={Options} 
+                  <Doughnut className={isTransfer ? `${classes.blurTransferComponent} doughnut-filter` : 'doughnut-filter'} 
+                      data={TransferChartData} options={Options} 
                       plugins={[transferChartLabel]}
-                    style={{display:`${!isTransfer ? 'none' : 'block'}`}}/>
+                      style={{display:`${!isTransfer ? 'none' : 'block'}`}}/>
                 </Box>
               </Grid>
-              <Grid xs={6} md={4}>
+              <Grid xs={6} md={4} className={isTransfer ? classes.blurTransferComponent : ''}>
                 {/* <Grid xs={12} md={12} mt={3}>
                   <div justifyContent='center'style={{ display: 'flex'}}>
                     <CircularProgress

@@ -158,3 +158,12 @@
     }
     
 }
+
+.AlertSetting{
+    visibility: hidden;
+    animation-name: visible;
+}
+@keyframes visible {
+    from {visibility: hidden;top:0px}
+    to {visibility: visible; top:40px}
+}

@@ -36,7 +36,7 @@ export const DataMobile = {
      //       borderSpacing: [ 15,15,20,20 ],
             hoverBorderColor:["#0D5BE1","#13DAE9 ", "#FFB347", "#DD0004" ],
             hoverBorderWidth:[ 10, 10, 10, 10 ],
-            spacing: 10,
+            spacing: 8,
             borderShadowColor: [ "#5E95FF"],
             cutoutPercentage: 0  
         }

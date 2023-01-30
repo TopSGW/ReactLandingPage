@@ -7,10 +7,13 @@ import {
   IconButton,
   Button,
   TextField,
+  Alert,
+  Stack
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
+import React, {useState} from "react";
 import { useStyles } from "../../../../Styles";
+import axios from 'axios';
 import FlashLogo from "../../../../assests/Logo/Flashlogo.png";
 // import inbox from "../../../../assests/Images/inbox.png";
 import img1 from "../../../../assests/Images/social1.png";
@@ -72,8 +75,52 @@ const pics = [
 
 const ContactUs = () => {
   const classes = useStyles();
+  const [firstName, SetfirstName] = useState("");
+  const [lastName, SetlastName] = useState("");
+  const [emailAddress, SetemailAddress] = useState('');
+  const [messageContent, SetmessageContent] = useState('');
+  const [messageStatus, SetmessageStatus] = useState(<></>);
+  const SendMessage = async () =>{
+    const data = {
+      firstName: firstName,
+      lastName: lastName,
+      emailAddress: emailAddress,
+      messageContent: messageContent
+    }
+    await axios.post("http://localhost:5000/messages", data)
+        .then(res=>{
+          SetmessageStatus(
+            <Alert variant="filled" severity="success" style={{margin: 'auto', width: '60%',
+              animation:"visible 0.8s ease", position:'relative'}}
+              className='AlertSetting'>
+                Success!
+            </Alert>
+          );
+          setTimeout(() => { 
+            SetmessageStatus(<></>);
+          }, 2000);
+            console.log(res.data);
+          })
+        .catch((err)=> {
+          SetmessageStatus(
+            <Alert variant="filled" severity="error" style={{margin: 'auto', width: '60%',
+              animation:"visible 0.8s ease", position:'relative'}}
+              className='AlertSetting'>
+                Error!
+          </Alert>
+          );
+          setTimeout(() => { 
+            SetmessageStatus(<></>);
+        }, 2000);
+      });
+  }
   return (
     <>
+      <Stack sx={{ width: '100%', position:'fixed', top:0, zIndex:9999999}} spacing={2}>
+        {
+          messageStatus
+        }
+      </Stack>
       <Grid
         container
         sx={{
@@ -238,7 +285,8 @@ const ContactUs = () => {
                   <div className="contact-form-box">
                     <label>
                       <span>First Name</span>
-                      <input type="text" placeholder="Jenny" />
+                      <input type="text" placeholder="Jenny" value={firstName} 
+                        onChange={(e)=>SetfirstName(e.target.value)}/>
                     </label>
                   </div>
                 </Grid>
@@ -247,7 +295,8 @@ const ContactUs = () => {
                   <div className="contact-form-box">
                     <label>
                       <span>Last Name</span>
-                      <input type="text" placeholder="Wilson" />
+                      <input type="text" placeholder="Wilson" value={lastName} 
+                        onChange={(e) => SetlastName(e.target.value)}/>
                     </label>
                   </div>
                 </Grid>
@@ -257,7 +306,8 @@ const ContactUs = () => {
                       <span>Your Email Address</span>
                       <input
                         type="email"
-                        placeholder="jenny.lawson@example.com"
+                        placeholder="jenny.lawson@example.com" value={emailAddress}
+                        onChange={(e) => SetemailAddress(e.target.value)}
                       />
                     </label>
                   </div>
@@ -266,7 +316,8 @@ const ContactUs = () => {
                   <div className="contact-form-box">
                     <label>
                       <span>Tell us about your project</span>
-                      <textarea placeholder="Type Here..."></textarea>
+                      <textarea placeholder="Type Here..." value={messageContent}
+                        onChange={(e) => SetmessageContent(e.target.value)}></textarea>
                     </label>
                   </div>
                 </Grid>
@@ -281,7 +332,9 @@ const ContactUs = () => {
                   }}
                 >
                   <Grid item xs={12} md={6} className="contact-form-box">
-                    <Button sx={{ textTransform: "none" }}>Send Message</Button>
+                    <Button sx={{ textTransform: "none" }}
+                      onClick={()=>SendMessage()}>
+                        Send Message</Button>
                   </Grid>
                 </Grid>
               </Grid>
